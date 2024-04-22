@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Demo Class - Approximation</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Borja Cadenato" />
+    <meta name="date" content="2024-04-20" />
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, title-slide
+
+.title[
+# Demo Class - Approximation
+]
+.subtitle[
+## The Fourier Transform
+]
+.author[
+### Borja Cadenato
+]
+.date[
+### 2024-04-20
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+class: center, middle
+
+## How does an A4 sound wave look like?
+
+---
+
+class: center, middle
+
+## An A4 sound wave
+
+![](demo-approximation_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## Representation of a wave
+
+Frequency is measured in Hertz, number events per second.
+
+--
+
+`\(f_1 = 440 { \text{periods} \over \text{s}} = 440 \text{Hz}\)`
+
+--
+
+Frequency in the context of sinusoidal waves is usually measured in radians:
+
+--
+
+`\(\omega_1 = 2  \pi \cdot 440  {\text{radians} \over \text{s} }\)`
+
+--
+
+The representation of the 440 Hz (A4) sound wave is thus:
+
+`\(x(t) = \cos(2 \pi f_1 t) = \cos(\omega_1 t)\)`
+
+---
+
+class: center, top
+
+## An A4 sound wave in the frequency domain
+
+![](demo-approximation_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## Dirac Delta Function
+
+$$
+\delta(k) = 
+    \begin{cases} 
+    \infty &amp; \text{if `\(k = 0\)`} \newline 
+    0 &amp; \text{if `\(k \neq 0\)`}
+    \end{cases}
+$$
+
+$$
+\int_{-\infty}^{\infty} \delta(k) dk = 1
+$$
+
+--
+
+![](demo-approximation_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+--
+
+In general, a wave of amplitude `\(c_1\)` and angular frequency `\(\omega_1\)` ( `\(c_1 \cdot \cos(\omega_1 t)\)` ) can be represented as `\(c_1 \cdot \delta(\omega - \omega_1)\)`
+
+---
+
+class: center, top
+
+## An E5 sound wave
+
+![](demo-approximation_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, middle
+
+## An E5 sound wave in the frequency domain
+
+![](demo-approximation_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## A4 and E5 sound waves added up
+
+![](demo-approximation_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+--
+
+![](demo-approximation_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## A4 and E5 sound waves in the frequency domain
+
+![](demo-approximation_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+--
+
+![](demo-approximation_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## What is a Fourier Transform?
+
+--
+
+If a function can be represented as a sum of sinusoidal functions:
+
+`\(x(t) = c_1 \cdot \cos(\omega_1 t) + c_2 \cdot \cos(\omega_2 t) + \dots\)`
+
+--
+
+It can be represented in the frequency domain:
+
+`\(X(\omega) = c_1 \cdot \delta(\omega - \omega_1) + c_2 \cdot \delta(\omega - \omega_2) + \dots\)`
+
+--
+
+We say that `\(X(\omega)\)` is the Fourier Transform of `\(x(t)\)`
+
+![](demo-approximation_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## What is the Fourier Transform of this function?
+
+![](demo-approximation_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## How can we identify the wave parameters?
+
+Let's assume that the function `\(x(t)\)` is a sum of cosine functions:
+
+`\(x(t) = c_1 \cdot \cos(\omega_1 t) + c_2 \cdot \cos(\omega_2 t) + \cdots\)`
+
+--
+
+The Fourier Transform `\(X(\omega)\)` would be
+
+`\(X(\omega) = c_1 \cdot \delta(\omega - \omega_1) + c_2 \cdot \delta(\omega - \omega_2) + \cdots\)`
+
+But now the parameters `\(c_1\)`, `\(\omega_1\)`, `\(c_2\)`, `\(\omega_2\)`, etc. are unknown.
+
+---
+
+class: center, top
+
+## Angular Frequency Shifting
+
+A function `\(x(t) = cos(\omega t)\)` can be shifted in frequency by an angular frequency `\(\omega_d\)`:
+
+`\(x(t)_{\omega_d} = \cos([\omega - \omega_d] t)\)`
+
+--
+
+![](demo-approximation_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+--
+
+![](demo-approximation_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## How to frequency shift a function?
+
+An alternative expression of `\(\cos (x)\)` is:
+
+`\(\cos (x) = {e^{-ix} \ + \  e^{ix} \over 2}\)`
+
+and thus
+
+`\(\cos (\omega t) = {e^{-i \omega t} \ + \  e^{i\omega t} \over 2}\)`
+
+--
+
+Multiplying the previous expression by `\(e^{-i \omega_d t}\)`
+
+`\(\cos (\omega t) \cdot e^{-i \omega_d t} = {e^{-i (\omega - \omega_d) t} \ + \  e^{i (\omega - \omega_d) t} \over 2} = \cos([\omega - \omega_d] t)\)`
+
+---
+
+class: center, top
+
+## Strategy to identify parameters for `\(X(\omega)\)`
+
+Assuming the function `\(x(t)\)` can be represented as a sum of cosine functions, let's shift the frequency of those cosine functions by an angular frequency `\(\omega_d\)`
+
+`\(x(t)_{\omega_d} = c_1 \cdot \cos([\omega_1 - \omega_d] t) + c_2 \cdot \cos([\omega_2 - \omega_d] t) + \cdots\)`
+
+--
+
+If `\(\omega_d = \omega_n\)`, the factor `\(n\)` would become a constant since `\(\cos(0) = 1\)`.
+
+`\(x(t)_{\omega_n} = \cdots + c_{n-1} \cdot \cos([w_{n-1} - w_{n}] t) + c_n + c_{n+1} \cdot \cos([w_{n+1} - w_{n}] t) + \cdots\)`
+
+--
+
+If the function `\(x(t)_{\omega_n}\)` is integrated over time, all the cosine terms will become 0, and only the constant term `\(c_n\)` will be left.
+
+`\(\int_{-\infty}^{\infty} x(t)_{\omega_n} dt = \int_{-\infty}^{\infty} c_n dt\)`
+
+--
+
+It can be concluded that `\(c_n\)` is the amplitude corresponding to the term with angular frequency `\(\omega_n\)`, or following our convention:
+
+`\(X(\omega_n) = c_n\)`
+
+---
+
+class: center, top
+
+## The Fourier Transform Equation
+
+The previous strategy can be followed for every `\(\omega\)` to build the function `\(X(\omega)\)`:
+
+`\(X(\omega) = \int_{-\infty}^{\infty} x(t)_{\omega} dt\)`
+
+--
+
+Where `\(x(t)_\omega\)` is the frequency shifted version of `\(x(t)\)`:
+
+`\(x(t)_\omega = x(t) e^{-i \omega t}\)`
+
+--
+
+Putting all together the Fourier Transform Equation is
+
+`\(X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i \omega t} dt\)`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
