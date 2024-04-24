@@ -4,7 +4,7 @@
     <title>Demo Class - Approximation</title>
     <meta charset="utf-8" />
     <meta name="author" content="Borja Cadenato" />
-    <meta name="date" content="2024-04-20" />
+    <meta name="date" content="2024-04-24" />
     <script src="libs/header-attrs-2.26/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
@@ -17,13 +17,13 @@ class: center, middle, title-slide
 # Demo Class - Approximation
 ]
 .subtitle[
-## The Fourier Transform
+## Introduction to the Fourier Transform
 ]
 .author[
 ### Borja Cadenato
 ]
 .date[
-### 2024-04-20
+### 2024-04-24
 ]
 
 ---
@@ -57,15 +57,11 @@ class: center, top
 
 Frequency is measured in Hertz, number events per second.
 
---
-
 `\(f_1 = 440 { \text{periods} \over \text{s}} = 440 \text{Hz}\)`
 
 --
 
 Frequency in the context of sinusoidal waves is usually measured in radians:
-
---
 
 `\(\omega_1 = 2  \pi \cdot 440  {\text{radians} \over \text{s} }\)`
 
@@ -107,7 +103,7 @@ $$
 
 --
 
-In general, a wave of amplitude `\(c_1\)` and angular frequency `\(\omega_1\)` ( `\(c_1 \cdot \cos(\omega_1 t)\)` ) can be represented as `\(c_1 \cdot \delta(\omega - \omega_1)\)`
+In general, a wave `\(c_1 \cdot \cos(\omega_1 t)\)` of amplitude `\(c_1\)` and angular frequency `\(\omega_1\)` can be represented as `\(c_1 \cdot \delta(\omega - \omega_1)\)`
 
 ---
 
@@ -177,9 +173,47 @@ We say that `\(X(\omega)\)` is the Fourier Transform of `\(x(t)\)`
 
 class: center, top
 
-## What is the Fourier Transform of this function?
+## Angular Frequency Shifting
+
+A function `\(x(t) = cos(\omega t)\)` can be shifted in frequency by an angular frequency offset `\(\omega_d\)`:
+
+`\(x(t)_{\omega_d} = \cos([\omega - \omega_d] t)\)`
+
+--
 
 ![](demo-approximation_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+--
+
+![](demo-approximation_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+---
+
+class: center, top
+
+## How to frequency shift a function?
+
+Euler's formula is:
+
+`\(e^{i x} = \cos x + i \sin x\)`
+
+If `\(x = \omega t\)` then
+
+`\(e^{i \omega t} = \cos (\omega t) + i \sin (\omega t)\)`
+
+--
+
+Multiplying the previous expression by `\(e^{-i \omega_d t}\)`
+
+`\(e^{i \omega t} \cdot e^{-i \omega_d t} = e^{i (\omega - \omega_d) t} = \cos ([\omega - \omega_d] t) + i \sin ([\omega - \omega_d] t)\)`
+
+---
+
+class: center, top
+
+## What is the Fourier Transform of this function?
+
+![](demo-approximation_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -203,90 +237,88 @@ But now the parameters `\(c_1\)`, `\(\omega_1\)`, `\(c_2\)`, `\(\omega_2\)`, etc
 
 class: center, top
 
-## Angular Frequency Shifting
+## How to transform `\(\cos(\omega_1 t)\)`
 
-A function `\(x(t) = cos(\omega t)\)` can be shifted in frequency by an angular frequency `\(\omega_d\)`:
+Let `\(x(t) = \cos(\omega_1 t)\)`
 
-`\(x(t)_{\omega_d} = \cos([\omega - \omega_d] t)\)`
+Let's shift `\(\cos(\omega_1 t)\)` by an angular frequency `\(\omega_d\)`
 
---
-
-![](demo-approximation_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+`\(\cos([\omega_1 - \omega_d] t)\)`
 
 --
 
-![](demo-approximation_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+Let's call
+
+`\(F(\cos(\omega_1 t), \omega) = \int_{-\infty}^{\infty} \cos([\omega_1 - \omega] t) dt\)`
+
+Then, if `\(\omega_1 - \omega_d \neq 0\)`
+
+`\(F(\cos(\omega_1 t), \omega_d) = \int_{-\infty}^{\infty} \cos([\omega_1 - \omega_d] t) dt = 0\)`
+
+--
+
+If `\(\omega_1 - \omega_d = 0\)`
+
+`\(F(\cos(\omega_1 t), \omega_d) = \int_{-\infty}^{\infty} \cos([\omega_1 - \omega_d] t) dt = \int_{-\infty}^{\infty} dt = \infty\)`
+
+because `\(\cos([\omega_1 - \omega_d] t) = \cos(0) = 1\)`
 
 ---
 
 class: center, top
 
-## How to frequency shift a function?
+## How to transform `\(\cos(\omega_1 t)\)`
 
-An alternative expression of `\(\cos (x)\)` is:
+To summarise, if `\(x(t) = \cos(\omega_1 t)\)`:
 
-`\(\cos (x) = {e^{-ix} \ + \  e^{ix} \over 2}\)`
-
-and thus
-
-`\(\cos (\omega t) = {e^{-i \omega t} \ + \  e^{i\omega t} \over 2}\)`
+$$
+F(x(t), \omega) = \begin{cases}
+0 &amp; \text{if `\(\omega \neq \omega_1\)`} \newline
+\infty &amp; \text{if `\(\omega = \omega_1\)`}
+\end{cases} = \delta(\omega - \omega_1)
+$$
 
 --
 
-Multiplying the previous expression by `\(e^{-i \omega_d t}\)`
+Let's call
 
-`\(\cos (\omega t) \cdot e^{-i \omega_d t} = {e^{-i (\omega - \omega_d) t} \ + \  e^{i (\omega - \omega_d) t} \over 2} = \cos([\omega - \omega_d] t)\)`
+`\(X(\omega) = F(x(t), \omega)\)`
+
+Then, in general, if `\(x(t) = c_1 \cdot \cos(\omega_1 t)\)` then
+
+`\(X(\omega) = c_1 \cdot \delta(\omega - \omega_1)\)`
+
+--
+
+And if `\(x(t) = c_1 \cdot \cos(\omega_1 t) + c_2 \cdot \cos(\omega_2 t) + \dots\)` then
+
+`\(X(\omega) = c_1 \cdot \delta(\omega - \omega_1) \ c_2 \cdot \delta(\omega - \omega_2) + \dots\)`
 
 ---
 
 class: center, top
 
-## Strategy to identify parameters for `\(X(\omega)\)`
+## Conclusion - Fourier Transform of `\(x(t)\)`
 
-Assuming the function `\(x(t)\)` can be represented as a sum of cosine functions, let's shift the frequency of those cosine functions by an angular frequency `\(\omega_d\)`
-
-`\(x(t)_{\omega_d} = c_1 \cdot \cos([\omega_1 - \omega_d] t) + c_2 \cdot \cos([\omega_2 - \omega_d] t) + \cdots\)`
+Finally, if `\(x(t)\)` is a general function over time, and it can be described as a (possibly infinite) series of sinusoidal functions...
 
 --
 
-If `\(\omega_d = \omega_n\)`, the factor `\(n\)` would become a constant since `\(\cos(0) = 1\)`.
-
-`\(x(t)_{\omega_n} = \cdots + c_{n-1} \cdot \cos([w_{n-1} - w_{n}] t) + c_n + c_{n+1} \cdot \cos([w_{n+1} - w_{n}] t) + \cdots\)`
+... the Fourier Transform of `\(x(t)\)` is a new function `\(X(\omega)\)` in the angular frequency domain.
 
 --
 
-If the function `\(x(t)_{\omega_n}\)` is integrated over time, all the cosine terms will become 0, and only the constant term `\(c_n\)` will be left.
+If `\(x(t)\)` can be expressed as a series of complex exponential functions `\(c_k \cdot e^{i \omega_k t}\)`, since frequency shifting is just multiplying by `\(e^{- i \omega t}\)`, and following the same approach described before:
 
-`\(\int_{-\infty}^{\infty} x(t)_{\omega_n} dt = \int_{-\infty}^{\infty} c_n dt\)`
-
---
-
-It can be concluded that `\(c_n\)` is the amplitude corresponding to the term with angular frequency `\(\omega_n\)`, or following our convention:
-
-`\(X(\omega_n) = c_n\)`
+$$
+X(\omega) = \int_{-\infty}^{\infty} x(t) \cdot e^{-i \omega t} dt
+$$
 
 ---
 
-class: center, top
+class: center, middle
 
-## The Fourier Transform Equation
-
-The previous strategy can be followed for every `\(\omega\)` to build the function `\(X(\omega)\)`:
-
-`\(X(\omega) = \int_{-\infty}^{\infty} x(t)_{\omega} dt\)`
-
---
-
-Where `\(x(t)_\omega\)` is the frequency shifted version of `\(x(t)\)`:
-
-`\(x(t)_\omega = x(t) e^{-i \omega t}\)`
-
---
-
-Putting all together the Fourier Transform Equation is
-
-`\(X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i \omega t} dt\)`
-
+### Slides: [github.com/bcadenato/ie-demo](https://github.com/bcadenato/ie-demo)
 
 
 

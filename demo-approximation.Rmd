@@ -1,8 +1,8 @@
 ---
 title: "Demo Class - Approximation"
-subtitle: "The Fourier Transform"
+subtitle: "Introduction to the Fourier Transform"
 author: "Borja Cadenato"
-date: "2024-04-20"
+date: "2024-04-24"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -125,15 +125,11 @@ class: center, top
 
 Frequency is measured in Hertz, number events per second.
 
---
-
 $f_1 = 440 { \text{periods} \over \text{s}} = 440 \text{Hz}$
 
 --
 
 Frequency in the context of sinusoidal waves is usually measured in radians:
-
---
 
 $\omega_1 = 2  \pi \cdot 440  {\text{radians} \over \text{s} }$
 
@@ -190,7 +186,7 @@ coord_freq(
 
 --
 
-In general, a wave of amplitude $c_1$ and angular frequency $\omega_1$ ( $c_1 \cdot \cos(\omega_1 t)$ ) can be represented as $c_1 \cdot \delta(\omega - \omega_1)$
+In general, a wave $c_1 \cdot \cos(\omega_1 t)$ of amplitude $c_1$ and angular frequency $\omega_1$ can be represented as $c_1 \cdot \delta(\omega - \omega_1)$
 
 ---
 
@@ -365,59 +361,9 @@ plot_1 + text_1 + plot_2
 
 class: center, top
 
-## What is the Fourier Transform of this function?
-
-```{r}
-time_02 <- seq(-0.01, 0.01, length.out = 1000)
-
-frequency_03 <- 391.9954
-amplitude_03 <- 1
-
-frequency_04 <- 466.1638
-amplitude_04 <- 0.8
-
-frequency_05 <- 523.2511
-amplitude_05 <- 0.6
-
-ggplot() +
-    geom_wave(
-        time_02,
-        get_wave(
-            time_02, frequency_03, amplitude_03) +
-        get_wave(
-            time_02, frequency_04, amplitude_04) +
-        get_wave(
-            time_02, frequency_05, amplitude_05)) +
-    labs(x = "Time (ms)", y = "Amplitude", title = "Unknown Wave") +
-    scale_x_continuous(
-        labels = label_number(scale = 1000))
-```
-
----
-
-class: center, top
-
-## How can we identify the wave parameters?
-
-Let's assume that the function $x(t)$ is a sum of cosine functions:
-
-$x(t) = c_1 \cdot \cos(\omega_1 t) + c_2 \cdot \cos(\omega_2 t) + \cdots$
-
---
-
-The Fourier Transform $X(\omega)$ would be
-
-$X(\omega) = c_1 \cdot \delta(\omega - \omega_1) + c_2 \cdot \delta(\omega - \omega_2) + \cdots$
-
-But now the parameters $c_1$, $\omega_1$, $c_2$, $\omega_2$, etc. are unknown.
-
----
-
-class: center, top
-
 ## Angular Frequency Shifting
 
-A function $x(t) = cos(\omega t)$ can be shifted in frequency by an angular frequency $\omega_d$:
+A function $x(t) = cos(\omega t)$ can be shifted in frequency by an angular frequency offset $\omega_d$:
 
 $x(t)_{\omega_d} = \cos([\omega - \omega_d] t)$
 
@@ -491,70 +437,156 @@ class: center, top
 
 ## How to frequency shift a function?
 
-An alternative expression of $\cos (x)$ is:
+Euler's formula is:
 
-$\cos (x) = {e^{-ix} \ + \  e^{ix} \over 2}$
+$e^{i x} = \cos x + i \sin x$
 
-and thus
+If $x = \omega t$ then
 
-$\cos (\omega t) = {e^{-i \omega t} \ + \  e^{i\omega t} \over 2}$
+$e^{i \omega t} = \cos (\omega t) + i \sin (\omega t)$
 
 --
 
 Multiplying the previous expression by $e^{-i \omega_d t}$
 
-$\cos (\omega t) \cdot e^{-i \omega_d t} = {e^{-i (\omega - \omega_d) t} \ + \  e^{i (\omega - \omega_d) t} \over 2} = \cos([\omega - \omega_d] t)$
+$e^{i \omega t} \cdot e^{-i \omega_d t} = e^{i (\omega - \omega_d) t} = \cos ([\omega - \omega_d] t) + i \sin ([\omega - \omega_d] t)$
 
 ---
 
 class: center, top
 
-## Strategy to identify parameters for $X(\omega)$
+## What is the Fourier Transform of this function?
 
-Assuming the function $x(t)$ can be represented as a sum of cosine functions, let's shift the frequency of those cosine functions by an angular frequency $\omega_d$
+```{r}
+time_02 <- seq(-0.01, 0.01, length.out = 1000)
 
-$x(t)_{\omega_d} = c_1 \cdot \cos([\omega_1 - \omega_d] t) + c_2 \cdot \cos([\omega_2 - \omega_d] t) + \cdots$
+frequency_03 <- 391.9954
+amplitude_03 <- 1
 
---
+frequency_04 <- 466.1638
+amplitude_04 <- 0.8
 
-If $\omega_d = \omega_n$, the factor $n$ would become a constant since $\cos(0) = 1$.
+frequency_05 <- 523.2511
+amplitude_05 <- 0.6
 
-$x(t)_{\omega_n} = \cdots + c_{n-1} \cdot \cos([w_{n-1} - w_{n}] t) + c_n + c_{n+1} \cdot \cos([w_{n+1} - w_{n}] t) + \cdots$
-
---
-
-If the function $x(t)_{\omega_n}$ is integrated over time, all the cosine terms will become 0, and only the constant term $c_n$ will be left.
-
-$\int_{-\infty}^{\infty} x(t)_{\omega_n} dt = \int_{-\infty}^{\infty} c_n dt$
-
---
-
-It can be concluded that $c_n$ is the amplitude corresponding to the term with angular frequency $\omega_n$, or following our convention:
-
-$X(\omega_n) = c_n$
+ggplot() +
+    geom_wave(
+        time_02,
+        get_wave(
+            time_02, frequency_03, amplitude_03) +
+        get_wave(
+            time_02, frequency_04, amplitude_04) +
+        get_wave(
+            time_02, frequency_05, amplitude_05)) +
+    labs(x = "Time (ms)", y = "Amplitude", title = "Unknown Wave") +
+    scale_x_continuous(
+        labels = label_number(scale = 1000))
+```
 
 ---
 
 class: center, top
 
-## The Fourier Transform Equation
+## How can we identify the wave parameters?
 
-The previous strategy can be followed for every $\omega$ to build the function $X(\omega)$:
+Let's assume that the function $x(t)$ is a sum of cosine functions:
 
-$X(\omega) = \int_{-\infty}^{\infty} x(t)_{\omega} dt$
-
---
-
-Where $x(t)_\omega$ is the frequency shifted version of $x(t)$:
-
-$x(t)_\omega = x(t) e^{-i \omega t}$
+$x(t) = c_1 \cdot \cos(\omega_1 t) + c_2 \cdot \cos(\omega_2 t) + \cdots$
 
 --
 
-Putting all together the Fourier Transform Equation is
+The Fourier Transform $X(\omega)$ would be
 
-$X(\omega) = \int_{-\infty}^{\infty} x(t) e^{-i \omega t} dt$
+$X(\omega) = c_1 \cdot \delta(\omega - \omega_1) + c_2 \cdot \delta(\omega - \omega_2) + \cdots$
 
+But now the parameters $c_1$, $\omega_1$, $c_2$, $\omega_2$, etc. are unknown.
+
+---
+
+class: center, top
+
+## How to transform $\cos(\omega_1 t)$
+
+Let $x(t) = \cos(\omega_1 t)$
+
+Let's shift $\cos(\omega_1 t)$ by an angular frequency $\omega_d$
+
+$\cos([\omega_1 - \omega_d] t)$
+
+--
+
+Let's call
+
+$F(\cos(\omega_1 t), \omega) = \int_{-\infty}^{\infty} \cos([\omega_1 - \omega] t) dt$
+
+Then, if $\omega_1 - \omega_d \neq 0$
+
+$F(\cos(\omega_1 t), \omega_d) = \int_{-\infty}^{\infty} \cos([\omega_1 - \omega_d] t) dt = 0$
+
+--
+
+If $\omega_1 - \omega_d = 0$
+
+$F(\cos(\omega_1 t), \omega_d) = \int_{-\infty}^{\infty} \cos([\omega_1 - \omega_d] t) dt = \int_{-\infty}^{\infty} dt = \infty$
+
+because $\cos([\omega_1 - \omega_d] t) = \cos(0) = 1$
+
+---
+
+class: center, top
+
+## How to transform $\cos(\omega_1 t)$
+
+To summarise, if $x(t) = \cos(\omega_1 t)$:
+
+$$
+F(x(t), \omega) = \begin{cases}
+0 & \text{if $\omega \neq \omega_1$} \newline
+\infty & \text{if $\omega = \omega_1$}
+\end{cases} = \delta(\omega - \omega_1)
+$$
+
+--
+
+Let's call
+
+$X(\omega) = F(x(t), \omega)$
+
+Then, in general, if $x(t) = c_1 \cdot \cos(\omega_1 t)$ then
+
+$X(\omega) = c_1 \cdot \delta(\omega - \omega_1)$
+
+--
+
+And if $x(t) = c_1 \cdot \cos(\omega_1 t) + c_2 \cdot \cos(\omega_2 t) + \dots$ then
+
+$X(\omega) = c_1 \cdot \delta(\omega - \omega_1) \ c_2 \cdot \delta(\omega - \omega_2) + \dots$
+
+---
+
+class: center, top
+
+## Conclusion - Fourier Transform of $x(t)$
+
+Finally, if $x(t)$ is a general function over time, and it can be described as a (possibly infinite) series of sinusoidal functions...
+
+--
+
+... the Fourier Transform of $x(t)$ is a new function $X(\omega)$ in the angular frequency domain.
+
+--
+
+If $x(t)$ can be expressed as a series of complex exponential functions $c_k \cdot e^{i \omega_k t}$, since frequency shifting is just multiplying by $e^{- i \omega t}$, and following the same approach described before:
+
+$$
+X(\omega) = \int_{-\infty}^{\infty} x(t) \cdot e^{-i \omega t} dt
+$$
+
+---
+
+class: center, middle
+
+### Slides: [github.com/bcadenato/ie-demo](https://github.com/bcadenato/ie-demo)
 
 
 
